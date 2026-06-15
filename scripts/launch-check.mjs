@@ -1,7 +1,8 @@
 // @ts-check
 /**
- * launch-gates.mjs — machine-checked definition-of-done (§4.3 drift-defence, applied
- * to DELIVERABLES not just code). The PWA install affordance was once dropped because
+ * launch-check.mjs — machine-checked launch checklist (Harness §4.7; the §4.3
+ * drift-defence pattern applied to DELIVERABLES, not just code). The PWA install
+ * affordance was once dropped because
  * it lived only in harness prose (§2.0 Tier-B "includes: PWA", §19) and nothing in
  * `verify` failed when it was absent. This linter asserts the Tier-B always-on surface
  * EXISTS, so a missing deliverable turns the build red instead of slipping silently.
@@ -59,8 +60,15 @@ const layout = read("app/layout.tsx");
 need(/@vercel\/analytics/.test(layout) && /<Analytics/.test(layout), "Analytics: <Analytics/> not mounted in the root layout (§8.5)");
 need(/GoogleAnalytics/.test(layout), "Analytics: GA4 loader not mounted in the root layout (§8.2)");
 
+// --- Platform guards (§15) ----------------------------------------------------------------
+// The Marketplace injects KV_REST_API_*, not the legacy UPSTASH_*; readUpstashEnv must accept
+// both, pinned by its own unit test (§4.7).
+const kv = read("lib/kv.ts");
+need(/KV_REST_API_URL/.test(kv) && /UPSTASH_REDIS_REST_URL/.test(kv), "Platform: readUpstashEnv must accept both KV env-name pairs (§15)");
+need(exists("tests/unit/kv/env.test.ts"), "Platform: §15 dual-KV-env-name guard test missing");
+
 if (failures) {
-  console.error(`\nlaunch-gates: ${failures} required deliverable(s) missing.`);
+  console.error(`\nlaunch:check — ${failures} required deliverable(s) missing.`);
   process.exit(1);
 }
-console.error("launch-gates OK — PWA · SEO · security headers · analytics all present.");
+console.error("launch:check OK — PWA · SEO · security headers · analytics all present.");

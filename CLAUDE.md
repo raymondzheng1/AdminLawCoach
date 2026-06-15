@@ -33,7 +33,7 @@ Next.js (App Router) + TS strict · Vercel Pro `syd1` · browser localStorage (o
 `ANTHROPIC_API_KEY` (server-only) · `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN` **or** the Marketplace `KV_REST_API_URL`/`KV_REST_API_TOKEN` (either pair accepted, §15) · `SESSION_CAP_USD` (operator-set in Vercel = 0.5; the PRD's \$5 is illustrative — the env var is authoritative) · `GLOBAL_DAILY_BUDGET_USD` (=50) · `NEXT_PUBLIC_SITE_URL` (canonical/sitemap/robots) · `NEXT_PUBLIC_GA_ID` (optional, GA4 no-ops when unset) · `ADMINLAW_DEFAULT_MODEL` (=`claude-sonnet-4-6`) · `ADMINLAW_SMALL_MODEL` (=`claude-haiku-4-5`, repair) · `RESEND_API_KEY`+`ADMIN_NOTIFY_EMAIL`+`FROM_EMAIL` (optional, only if contact form enabled).
 
 ## Commands
-`npm run build-corpus` (rebuild + re-commit `corpus/index.json` whenever `corpus/source/` changes) · `npm run verify` (the one gate: `corpus-check` → `no-ai-mentions` → `citation-format` → `typecheck` → `lint` → `vitest`) · `npm run dev` / `npm run build`.
+`npm run build-corpus` (rebuild + re-commit `corpus/index.json` whenever `corpus/source/` changes) · `npm run verify` (the one gate: `corpus-check` → `no-ai-mentions` → `citation-format` → `launch:check` → `typecheck` → `lint` → `vitest`) · `npm run dev` / `npm run build`.
 
 ## Build state (M0–M4 shipped, verify green: 71 tests / 10 files)
 - **Corpus** built from 7 docx → committed `corpus/index.json` (389 chunks · 219 authorities · 52 pinpoints · 20 taxonomy items). Extraction SoT: `lib/corpus/patterns.mjs` (shared by builder + verifier via `patterns.d.mts`).
@@ -42,5 +42,5 @@ Next.js (App Router) + TS strict · Vercel Pro `syd1` · browser localStorage (o
 - **UI**: `/` landing (consumer §14.0) · `/study` client app (Ask/Practice/Model/Exam/Explain/Progress) with the source panel, usage meter, BYO-key. SEO: `sitemap.ts`/`robots.ts`/per-route metadata; `/study` is `noindex`.
 - **Note (correctness anchor):** the verifier never trusts the curated authority list — it confirms each cited authority is present in the committed corpus text on token boundaries, then binds it to a real chunk. Extraction precision affects browse/UX, never the grounding guarantee.
 
-## Launch gates
-`verify` green (incl. `corpus-check`) ✓ · verifier rejects an out-of-corpus citation (integration test) ✓ · cost guard blocks at the session cap and fails closed when KV down ✓ · "not covered" path works ✓ (live-confirmed) · no-AI-mentions linter green ✓ · mobile 375×812 pass ✓ · BYO-key bypasses meter ✓.
+## Launch gates (full Appendix-A-derived set for Tier B — never a subset, §4.7; `launch:check` machine-asserts the deliverables)
+`verify` green (incl. `corpus-check` + `launch:check`) ✓ · verifier rejects an out-of-corpus citation (integration test) ✓ · cost guard blocks at the session cap and fails closed when KV down ✓ · "not covered" path works ✓ (live-confirmed) · no-AI-mentions linter green ✓ · mobile 375×812 pass ✓ · BYO-key bypasses meter ✓ · **installable PWA** — manifest + icon set + in-app install affordance (§19) ✓ · **SEO** — sitemap/robots/per-route metadata, env-driven base URL (§8) ✓ · **analytics** — Vercel Analytics + GA4 loader mounted (§8.5/§8.2) ✓ · **security headers** — CSP + nosniff + Referrer-Policy + Permissions-Policy in `vercel.json` (§6.6) ✓ · **§15 dual-KV-env-name guard** — `readUpstashEnv` accepts both pairs, pinned by a unit test ✓.

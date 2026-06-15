@@ -12,12 +12,12 @@
     "corpus-check": "node scripts/corpus-check.mjs",
     "no-ai-mentions": "node scripts/no-ai-mentions.mjs",
     "citation-format": "node scripts/citation-format.mjs",
-    "launch-gates": "node scripts/launch-gates.mjs",
+    "launch:check": "node scripts/launch-check.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
-    "verify": "npm run corpus-check && npm run no-ai-mentions && npm run citation-format && npm run launch-gates && npm run typecheck && npm run lint && npm run test"
+    "verify": "npm run corpus-check && npm run no-ai-mentions && npm run citation-format && npm run launch:check && npm run typecheck && npm run lint && npm run test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.69.0",
