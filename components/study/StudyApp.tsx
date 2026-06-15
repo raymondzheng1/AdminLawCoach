@@ -8,6 +8,7 @@ import { StudyProvider } from "@/components/study/StudyContext";
 import { SourcePanel } from "@/components/study/SourcePanel";
 import { UsageMeter } from "@/components/study/UsageMeter";
 import { ByoKeyPanel } from "@/components/study/ByoKeyPanel";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { GroundedView } from "@/components/study/GroundedView";
 import { PracticeView } from "@/components/study/PracticeView";
 import { ModelAnswerView } from "@/components/study/ModelAnswerView";
@@ -77,6 +78,8 @@ export function StudyApp() {
             <ModeSwitcher modes={MODES} active={mode} onSelect={setMode} />
           </div>
         </header>
+
+        <InstallPrompt />
 
         <main className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[minmax(0,1fr)_360px]">
           <section className="min-w-0">

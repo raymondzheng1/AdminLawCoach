@@ -16,7 +16,7 @@ export default tseslint.config(
   {
     // Build scripts are plain Node ESM; allow console + relax some TS rules there.
     files: ["scripts/**/*.mjs"],
-    languageOptions: { globals: { process: "readonly", console: "readonly" } },
+    languageOptions: { globals: { process: "readonly", console: "readonly", Buffer: "readonly" } },
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
     },
