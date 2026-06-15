@@ -8,7 +8,9 @@ import { usdForUsage, type TokenUsage } from "@/lib/cost/pricing";
  *  - FAILS CLOSED: if the KV store is unavailable in production, deny (§6.4)
  *  - BYO-key bypasses the meter entirely (costs us nothing)
  */
-export const SESSION_CAP_USD = Number(process.env.SESSION_CAP_USD ?? "5");
+// The operator-funded per-session cap. The Vercel env var is the source of truth;
+// this fallback (used only when unset, e.g. local dev) matches the deployed value.
+export const SESSION_CAP_USD = Number(process.env.SESSION_CAP_USD ?? "0.5");
 export const GLOBAL_DAILY_BUDGET_USD = Number(process.env.GLOBAL_DAILY_BUDGET_USD ?? "50");
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24; // 24h

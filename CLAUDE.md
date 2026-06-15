@@ -30,7 +30,7 @@ Next.js (App Router) + TS strict · Vercel Pro `syd1` · browser localStorage (o
 - Don't mention AI/LLM/Claude in customer copy.
 
 ## Env vars (placeholders in `.env.example`; secrets never committed)
-`ANTHROPIC_API_KEY` (server-only) · `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN` **or** the Marketplace `KV_REST_API_URL`/`KV_REST_API_TOKEN` (either pair accepted, §15) · `SESSION_CAP_USD` (=5) · `GLOBAL_DAILY_BUDGET_USD` (=50) · `NEXT_PUBLIC_SITE_URL` (canonical/sitemap/robots) · `NEXT_PUBLIC_GA_ID` (optional, GA4 no-ops when unset) · `ADMINLAW_DEFAULT_MODEL` (=`claude-sonnet-4-6`) · `ADMINLAW_SMALL_MODEL` (=`claude-haiku-4-5`, repair) · `RESEND_API_KEY`+`ADMIN_NOTIFY_EMAIL`+`FROM_EMAIL` (optional, only if contact form enabled).
+`ANTHROPIC_API_KEY` (server-only) · `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN` **or** the Marketplace `KV_REST_API_URL`/`KV_REST_API_TOKEN` (either pair accepted, §15) · `SESSION_CAP_USD` (operator-set in Vercel = 0.5; the PRD's \$5 is illustrative — the env var is authoritative) · `GLOBAL_DAILY_BUDGET_USD` (=50) · `NEXT_PUBLIC_SITE_URL` (canonical/sitemap/robots) · `NEXT_PUBLIC_GA_ID` (optional, GA4 no-ops when unset) · `ADMINLAW_DEFAULT_MODEL` (=`claude-sonnet-4-6`) · `ADMINLAW_SMALL_MODEL` (=`claude-haiku-4-5`, repair) · `RESEND_API_KEY`+`ADMIN_NOTIFY_EMAIL`+`FROM_EMAIL` (optional, only if contact form enabled).
 
 ## Commands
 `npm run build-corpus` (rebuild + re-commit `corpus/index.json` whenever `corpus/source/` changes) · `npm run verify` (the one gate: `corpus-check` → `no-ai-mentions` → `citation-format` → `typecheck` → `lint` → `vitest`) · `npm run dev` / `npm run build`.
@@ -43,4 +43,4 @@ Next.js (App Router) + TS strict · Vercel Pro `syd1` · browser localStorage (o
 - **Note (correctness anchor):** the verifier never trusts the curated authority list — it confirms each cited authority is present in the committed corpus text on token boundaries, then binds it to a real chunk. Extraction precision affects browse/UX, never the grounding guarantee.
 
 ## Launch gates
-`verify` green (incl. `corpus-check`) ✓ · verifier rejects an out-of-corpus citation (integration test) ✓ · cost guard blocks at \$5 and fails closed when KV down ✓ · "not covered" path works ✓ (live-confirmed) · no-AI-mentions linter green ✓ · mobile 375×812 pass ✓ · BYO-key bypasses meter ✓.
+`verify` green (incl. `corpus-check`) ✓ · verifier rejects an out-of-corpus citation (integration test) ✓ · cost guard blocks at the session cap and fails closed when KV down ✓ · "not covered" path works ✓ (live-confirmed) · no-AI-mentions linter green ✓ · mobile 375×812 pass ✓ · BYO-key bypasses meter ✓.
