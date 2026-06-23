@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Spinner } from "@/components/ui/primitives";
 import { AnswerDisplay } from "@/components/study/AnswerDisplay";
+import { ErrorState } from "@/components/study/ErrorState";
+import { AnswerSkeleton } from "@/components/ui/Skeleton";
 import { useSubmit } from "@/components/study/useSubmit";
 import { useStudy } from "@/components/study/StudyContext";
 import type { GroundedResponse } from "@/lib/client/types";
@@ -31,7 +32,9 @@ export function GroundedView({
     const v = text.trim();
     if (!v || loading) return;
     setValue(v);
+    study.setBusy(true);
     const r = await submit(v);
+    study.setBusy(false);
     if (r) {
       study.setSources(r.sources);
       study.refreshUsage();
@@ -64,10 +67,10 @@ export function GroundedView({
         </button>
       </form>
 
-      {loading ? <Spinner label="Composing your answer…" /> : null}
-      {error ? <ErrorBanner message={error} /> : null}
+      {loading ? <AnswerSkeleton /> : null}
+      {error ? <ErrorState error={error} onRetry={() => void go(value)} onUseKey={study.openByoKey} /> : null}
 
-      {!result && !loading ? (
+      {!result && !loading && !error ? (
         <div>
           <p className="mb-4 max-w-prose text-caption leading-[1.6] text-muted">{blurb}</p>
           {examples && examples.length > 0 ? (
@@ -86,7 +89,7 @@ export function GroundedView({
         </div>
       ) : null}
 
-      {result ? <AnswerDisplay resp={result} title={titleOf(value)} onFocusSource={study.focusSource} /> : null}
+      {result && !loading ? <AnswerDisplay resp={result} title={titleOf(value)} onFocusSource={study.focusSource} /> : null}
     </div>
   );
 }
@@ -96,14 +99,6 @@ export function Header({ heading, blurb }: { heading: string; blurb: string }) {
     <div className="mb-5">
       <h1 className="font-serif text-title font-semibold text-ink">{heading}</h1>
       <p className="mt-1 max-w-prose text-caption leading-[1.6] text-muted">{blurb}</p>
-    </div>
-  );
-}
-
-export function ErrorBanner({ message }: { message: string }) {
-  return (
-    <div role="alert" className="rounded-input border border-line-strong border-l-[3px] border-l-flag bg-flag-bg p-3 text-caption text-flag-fg">
-      {message}
     </div>
   );
 }

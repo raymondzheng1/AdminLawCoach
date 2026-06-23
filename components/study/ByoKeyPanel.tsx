@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, TextInput } from "@/components/ui/primitives";
 import { getByoKey, setByoKey, clearByoKey, maskKey, isValidByoKeyShape } from "@/lib/client/byokey";
 
-/** Optional bring-your-own-key — held only in this browser, sent only as a request header. */
-export function ByoKeyPanel({ onChange }: { onChange: () => void }) {
-  const [open, setOpen] = useState(false);
+/** Optional bring-your-own-key — held only in this browser, sent only as a request header.
+ *  Controlled open state so an allowance-reached error can pop it open. */
+export function ByoKeyPanel({ onChange, open, onOpenChange }: { onChange: () => void; open: boolean; onOpenChange: (open: boolean) => void }) {
   const [current, setCurrent] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export function ByoKeyPanel({ onChange }: { onChange: () => void }) {
     setCurrent(getByoKey());
     setDraft("");
     setError(null);
-    setOpen(false);
+    onOpenChange(false);
     onChange();
   };
   const remove = () => {
@@ -35,7 +35,7 @@ export function ByoKeyPanel({ onChange }: { onChange: () => void }) {
   return (
     <div className="relative text-meta">
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => onOpenChange(!open)}
         className="font-medium text-navy underline decoration-teal-soft underline-offset-2 hover:decoration-teal"
       >
         {current ? `Key: ${maskKey(current)}` : "Use your own key"}

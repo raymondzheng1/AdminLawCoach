@@ -6,6 +6,10 @@ export interface StudyCtx {
   setSources: (s: SourceRef[]) => void;
   focusSource: (chunkId: string) => void;
   refreshUsage: () => void;
+  /** Toggle the source-panel loading shimmer (set by the source-bearing views). */
+  setBusy: (busy: boolean) => void;
+  /** Open the header "Use your own key" panel (from an allowance-reached error). */
+  openByoKey: () => void;
 }
 
 const Ctx = createContext<StudyCtx | null>(null);

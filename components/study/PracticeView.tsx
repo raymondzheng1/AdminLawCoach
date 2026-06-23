@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/primitives";
 import { Markdown } from "@/components/ui/Markdown";
-import { ErrorBanner } from "@/components/study/GroundedView";
+import { ErrorState } from "@/components/study/ErrorState";
+import { AnswerSkeleton } from "@/components/ui/Skeleton";
 import { AnswerDisplay } from "@/components/study/AnswerDisplay";
 import { FeedbackDisplay } from "@/components/study/FeedbackDisplay";
 import { AttemptEditor } from "@/components/study/AttemptEditor";
 import { SourcePanel } from "@/components/study/SourcePanel";
+import { useStudy } from "@/components/study/StudyContext";
 import { useSubmit } from "@/components/study/useSubmit";
 import { api } from "@/lib/client/api";
 import { loadStore, saveStore, addQuestion, addAttempt, newId } from "@/lib/storage";
@@ -16,6 +18,7 @@ import type { MetaResponse, QuestionResponse, FeedbackResponse, GroundedResponse
 type Kind = "hypothetical" | "essay";
 
 export function PracticeView({ meta, initialTopicId }: { meta: MetaResponse | null; initialTopicId?: string }) {
+  const study = useStudy();
   const topics = meta?.taxonomy ?? [];
   const [topicId, setTopicId] = useState(initialTopicId ?? "");
   const [kind, setKind] = useState<Kind>("hypothetical");
@@ -105,7 +108,7 @@ export function PracticeView({ meta, initialTopicId }: { meta: MetaResponse | nu
           </button>
           {gen.loading ? <Spinner label="" /> : null}
         </div>
-        {gen.error ? <ErrorBanner message={gen.error} /> : null}
+        {gen.error ? <ErrorState error={gen.error} onRetry={generate} onUseKey={study.openByoKey} /> : null}
 
         {question ? (
           <div className="rounded-input border border-line bg-surface p-5">
@@ -128,7 +131,7 @@ export function PracticeView({ meta, initialTopicId }: { meta: MetaResponse | nu
           </>
         ) : null}
 
-        {model.error ? <ErrorBanner message={model.error} /> : null}
+        {model.error ? <ErrorState error={model.error} onRetry={showModel} onUseKey={study.openByoKey} /> : null}
         {model.result ? (
           <div className="space-y-5 border-t border-line-faint pt-5">
             <div className="font-serif text-section font-semibold text-ink">Model answer</div>
@@ -141,8 +144,11 @@ export function PracticeView({ meta, initialTopicId }: { meta: MetaResponse | nu
       {/* Feedback panel */}
       <div>
         <div className="rounded-card bg-panel p-5">
-          {fb.error ? <ErrorBanner message={fb.error} /> : null}
-          {fb.result ? (
+          {fb.loading ? (
+            <AnswerSkeleton />
+          ) : fb.error ? (
+            <ErrorState error={fb.error} onRetry={getFeedback} onUseKey={study.openByoKey} />
+          ) : fb.result ? (
             <FeedbackDisplay resp={fb.result} question={question?.prompt ?? ""} attempt={attempt} />
           ) : (
             <p className="text-caption leading-[1.6] text-muted">

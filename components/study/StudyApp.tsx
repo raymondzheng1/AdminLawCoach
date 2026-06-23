@@ -34,6 +34,8 @@ export function StudyApp() {
   const [usage, setUsage] = useState<UsageResponse | null>(null);
   const [sources, setSources] = useState<SourceRef[]>([]);
   const [focused, setFocused] = useState<string | undefined>(undefined);
+  const [busy, setBusy] = useState(false);
+  const [byoOpen, setByoOpen] = useState(false);
   const [practiceTopicId, setPracticeTopicId] = useState<string | undefined>(undefined);
 
   const refreshUsage = useCallback(() => {
@@ -53,7 +55,8 @@ export function StudyApp() {
     setFocused(s[0]?.chunkId);
   }, []);
 
-  const ctx = { setSources: onSetSources, focusSource, refreshUsage };
+  const openByoKey = useCallback(() => setByoOpen(true), []);
+  const ctx = { setSources: onSetSources, focusSource, refreshUsage, setBusy, openByoKey };
   const practiceTopic = (topicId: string) => {
     setPracticeTopicId(topicId);
     setMode("practice");
@@ -71,7 +74,7 @@ export function StudyApp() {
             </Link>
             <div className="flex items-center gap-4">
               <UsageMeter usage={usage} />
-              <ByoKeyPanel onChange={refreshUsage} />
+              <ByoKeyPanel onChange={refreshUsage} open={byoOpen} onOpenChange={setByoOpen} />
             </div>
           </div>
         </header>
@@ -118,7 +121,7 @@ export function StudyApp() {
             {showSources ? (
               <div className="px-5 py-7 sm:px-6 lg:px-0 lg:py-0">
                 <div className="lg:sticky lg:top-24 lg:px-5 lg:py-7">
-                  <SourcePanel sources={sources} focusedChunkId={focused} />
+                  <SourcePanel sources={sources} focusedChunkId={focused} loading={busy} />
                 </div>
               </div>
             ) : null}

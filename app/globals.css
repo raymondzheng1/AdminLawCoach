@@ -111,11 +111,25 @@ h1, h2, h3, .font-display {
   transform: translateY(-1px);
 }
 
+/* Loading skeleton shimmer (§ States: shimmer on paper-sunk, not a frozen spinner). */
+@keyframes alc-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f6f4ee 25%, #efe9dd 37%, #f6f4ee 63%);
+  background-size: 200% 100%;
+  animation: alc-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-card);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
   .src-selected { transform: none; }
+  .skeleton { background: #f1ece1; }
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { RoleBadge } from "@/components/ui/primitives";
+import { SourceSkeleton } from "@/components/ui/Skeleton";
 import type { SourceRef } from "@/lib/client/types";
 
 /**
@@ -9,7 +10,7 @@ import type { SourceRef } from "@/lib/client/types";
  * chunk matches `focusedChunkId` lifts with a 2px teal ring and scrolls into view
  * (within the panel if it scrolls, else into the viewport). One highlight per panel.
  */
-export function SourcePanel({ sources, focusedChunkId }: { sources: SourceRef[]; focusedChunkId?: string }) {
+export function SourcePanel({ sources, focusedChunkId, loading }: { sources: SourceRef[]; focusedChunkId?: string; loading?: boolean }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,7 +38,9 @@ export function SourcePanel({ sources, focusedChunkId }: { sources: SourceRef[];
         ) : null}
       </div>
 
-      {sources.length === 0 ? (
+      {loading && sources.length === 0 ? (
+        <SourceSkeleton />
+      ) : sources.length === 0 ? (
         <p className="text-caption leading-[1.55] text-muted">
           Every answer is pinpointed to your course materials — the exact passages appear here. Sources are tagged{" "}
           <span className="font-mono text-[11px] text-navy">RULES</span> (cases &amp; legislation),{" "}

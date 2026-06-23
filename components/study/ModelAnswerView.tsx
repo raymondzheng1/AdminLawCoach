@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
-import { Spinner, Textarea } from "@/components/ui/primitives";
-import { Header, ErrorBanner } from "@/components/study/GroundedView";
+import { Textarea } from "@/components/ui/primitives";
+import { Header } from "@/components/study/GroundedView";
+import { ErrorState } from "@/components/study/ErrorState";
+import { AnswerSkeleton } from "@/components/ui/Skeleton";
 import { AnswerDisplay } from "@/components/study/AnswerDisplay";
 import { useStudy } from "@/components/study/StudyContext";
 import { useSubmit } from "@/components/study/useSubmit";
@@ -17,7 +19,9 @@ export function ModelAnswerView() {
 
   const go = async () => {
     if (!text.trim() || loading) return;
+    study.setBusy(true);
     const r = await submit(text, kind);
+    study.setBusy(false);
     if (r) {
       study.setSources(r.sources);
       study.refreshUsage();
@@ -47,14 +51,13 @@ export function ModelAnswerView() {
         >
           Write model answer
         </button>
-        {loading ? <Spinner label="Writing…" /> : null}
       </div>
-      {error ? <div className="mt-4"><ErrorBanner message={error} /></div> : null}
-      {result ? (
-        <div className="mt-6">
-          <AnswerDisplay resp={result} title="model-answer" onFocusSource={study.focusSource} />
-        </div>
-      ) : null}
+
+      <div className="mt-6">
+        {loading ? <AnswerSkeleton /> : null}
+        {error ? <ErrorState error={error} onRetry={() => void go()} onUseKey={study.openByoKey} /> : null}
+        {result && !loading ? <AnswerDisplay resp={result} title="model-answer" onFocusSource={study.focusSource} /> : null}
+      </div>
     </div>
   );
 }
