@@ -1,123 +1,114 @@
 import Link from "next/link";
-import { SITE } from "@/lib/site";
+import { Emblem } from "@/components/study/Emblem";
+import { LandingPreview } from "@/components/landing/LandingPreview";
 
 export default function HomePage() {
   return (
-    <div className="min-h-dvh">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5">
-        <span className="font-display text-lg font-semibold">{SITE.name}</span>
-        <Link href="/study" className="text-[15px] font-medium text-[var(--color-primary)] hover:underline">
-          Open the app →
-        </Link>
+    <div className="min-h-dvh bg-paper">
+      {/* Nav */}
+      <header className="border-b border-line-faint">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
+          <div className="flex items-center gap-2.5">
+            <Emblem size={28} />
+            <span className="font-serif text-[19px] font-semibold tracking-[-0.01em] text-ink">AdminLaw Coach</span>
+          </div>
+          <div className="flex items-center gap-6 text-caption text-muted">
+            <a href="#how" className="hidden hover:text-ink sm:inline">How it works</a>
+            <a href="#inside" className="hidden hover:text-ink sm:inline">What&rsquo;s inside</a>
+            <Link href="/study" className="rounded-cta bg-navy px-[18px] py-2.5 text-caption font-medium text-surface hover:bg-navy/90">
+              Start studying
+            </Link>
+          </div>
+        </div>
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-3xl px-5 pt-10 pb-14 text-center">
-        <p className="text-[var(--text-small)] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
-          Free · no sign-up · sourced to your materials
+      <section className="border-b border-line-faint px-6 py-14 text-center md:px-10 md:pt-16">
+        <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-pill border border-[#d8e0da] bg-surface px-3.5 py-1.5">
+          <span className="size-[7px] rounded-full bg-teal" />
+          <span className="text-[12.5px] font-semibold tracking-[0.02em] text-teal">Only your course materials. Nothing else.</span>
+        </div>
+        <h1 className="mx-auto max-w-[740px] font-serif text-[34px] font-semibold leading-[1.08] tracking-[-0.015em] text-ink sm:text-hero">
+          Every answer, traced back to your own course materials.
+        </h1>
+        <p className="mx-auto mt-5 max-w-[560px] text-[18px] leading-[1.6] text-muted">
+          A study companion for administrative law that answers only from what your unit teaches — pinpointed to the passage,
+          or it honestly tells you it isn&rsquo;t covered.
         </p>
-        <h1 className="mt-3 font-display text-4xl font-semibold leading-tight sm:text-5xl">{SITE.tagline}</h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-muted)]">
-          Ask questions, generate practice, and check your work for one administrative-law course — with a hard guarantee:
-          every answer is pinpointed to your course materials, or it says it isn&rsquo;t covered. Nothing outside them is
-          ever introduced.
-        </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link
-            href="/study"
-            className="inline-flex min-h-[48px] items-center rounded-lg bg-[var(--color-primary)] px-6 font-medium text-[var(--color-primary-fg)] hover:opacity-90"
-          >
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <Link href="/study" className="rounded-cta bg-navy px-7 py-[15px] text-[16px] font-semibold text-surface hover:bg-navy/90">
             Start studying — free
           </Link>
+          <a href="#preview" className="border-b-2 border-teal-soft px-2 py-[15px] text-[16px] font-semibold text-navy hover:border-teal">
+            See how sourcing works →
+          </a>
         </div>
+        <p className="mt-5 text-caption text-faint-2">No login. No account. Nothing stored on a server.</p>
       </section>
 
-      {/* Live preview of the trust surface */}
-      <section className="mx-auto max-w-3xl px-5 pb-14">
-        <div className="card overflow-hidden">
-          <div className="border-b border-[var(--color-border)] bg-[var(--color-paper)] px-5 py-3 text-[var(--text-small)] font-medium text-[var(--color-muted)]">
-            Ask · &ldquo;What is the test for legal unreasonableness?&rdquo;
-          </div>
-          <div className="p-5">
-            <p className="leading-relaxed">
-              A decision is legally unreasonable if it lacks an evident and intelligible justification — assessed against the
-              scope and purpose of the statute. It is a conclusion reached after identifying the legal error, and is treated as
-              a last resort and a stringent standard.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <span className="pinpoint-chip">Li · Notes</span>
-              <span className="pinpoint-chip">SZVFW · Notes</span>
-            </div>
-            <p className="mt-3 text-[var(--text-caption)] text-[var(--color-muted)]">
-              Illustrative. In the app, each chip opens the exact passage it came from.
-            </p>
-          </div>
-        </div>
+      {/* Live trust preview */}
+      <section id="preview" className="border-b border-line-faint bg-paper-sunk px-6 py-12 md:px-10">
+        <p className="mb-5 text-center font-serif text-section italic text-faint">A real answer looks like this</p>
+        <LandingPreview />
       </section>
 
       {/* What's inside */}
-      <section className="mx-auto max-w-5xl px-5 pb-14">
-        <h2 className="text-center font-display text-2xl font-semibold">What&rsquo;s inside</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section id="inside" className="mx-auto max-w-6xl px-6 py-12 md:px-10">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f) => (
-            <div key={f.title} className="card p-5">
-              <h3 className="font-display text-lg font-semibold">{f.title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-[var(--color-muted)]">{f.body}</p>
+            <div key={f.title} className="rounded-card border border-line bg-surface p-5">
+              <div className="mb-1.5 font-serif text-section font-semibold text-ink">{f.title}</div>
+              <div className="text-caption leading-[1.55] text-muted">{f.body}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* How it works */}
-      <section className="mx-auto max-w-3xl px-5 pb-14">
-        <h2 className="text-center font-display text-2xl font-semibold">How it works</h2>
-        <ol className="mt-6 space-y-4">
-          {STEPS.map((s, i) => (
-            <li key={s.title} className="flex gap-4">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)] font-semibold text-[var(--color-primary-fg)]">
-                {i + 1}
-              </span>
-              <div>
-                <h3 className="font-semibold">{s.title}</h3>
-                <p className="mt-1 text-[15px] leading-relaxed text-[var(--color-muted)]">{s.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+      <section id="how" className="border-t border-line-faint px-6 py-12 md:px-10">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-7 text-center font-serif text-title font-semibold text-ink">How it works</h2>
+          <ol className="space-y-5">
+            {STEPS.map((s, i) => (
+              <li key={s.title} className="flex gap-4">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-navy font-mono text-caption font-semibold text-surface">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="font-serif text-section font-semibold text-ink">{s.title}</h3>
+                  <p className="mt-1 text-caption leading-[1.6] text-muted">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       {/* Closing CTA */}
-      <section className="mx-auto max-w-3xl px-5 pb-16 text-center">
-        <Link
-          href="/study"
-          className="inline-flex min-h-[48px] items-center rounded-lg bg-[var(--color-primary)] px-6 font-medium text-[var(--color-primary-fg)] hover:opacity-90"
-        >
-          Open the app — no account needed
+      <section className="border-t border-line-faint px-6 py-14 text-center md:px-10">
+        <Link href="/study" className="inline-flex rounded-cta bg-navy px-7 py-[15px] text-[16px] font-semibold text-surface hover:bg-navy/90">
+          Start studying — no account needed
         </Link>
       </section>
 
-      <footer className="border-t border-[var(--color-border)] px-5 py-8">
-        <div className="mx-auto max-w-5xl text-[13px] leading-relaxed text-[var(--color-muted)]">
-          <p>
-            {SITE.name} is a study aid grounded only in the provided course materials — not legal advice, and intended for
-            practice and revision rather than live assessment. Free to use, with a small per-session usage cap; bring your own
-            key to remove it.
-          </p>
-        </div>
+      <footer className="border-t border-line-faint px-6 py-5 md:px-10">
+        <p className="mx-auto max-w-6xl text-meta leading-[1.5] text-faint-2">
+          A study aid, not legal advice. For practice and revision, not live assessment.
+        </p>
       </footer>
     </div>
   );
 }
 
 const FEATURES = [
-  { title: "Ask", body: "Plain-language answers to course questions, every authority pinpointed back to your materials." },
-  { title: "Practice", body: "Generate fresh hypotheticals and essays from any topic, then get marked against the model-answer issue set." },
-  { title: "Model answers", body: "Worked answers in IRAC or contention → both sides → preferred, sourced throughout." },
-  { title: "Exam mode", body: "Timed mocks with a word budget and pace tracking, then structured feedback and a downloadable copy." },
+  { title: "Ask", body: "Plain questions, sourced answers — every claim pinpointed to your materials." },
+  { title: "Practice", body: "Generate a hypothetical or essay, attempt it, and get marked against the model-answer issue set." },
+  { title: "Model answers", body: "Worked solutions in IRAC, or contention → both sides → preferred — sourced throughout." },
+  { title: "Exam", body: "Timed mocks with a word budget and pace, then structured feedback." },
 ];
 
 const STEPS = [
-  { title: "Open the app", body: "No login. A session starts instantly — your work stays on your device." },
-  { title: "Ask or practise", body: "Pick a mode and go. Answers are composed only from your course materials." },
-  { title: "Check the source", body: "Every claim carries a pinpoint chip — open it to read the exact passage behind the answer." },
+  { title: "Open the app", body: "No login. A session starts instantly, and your work stays on your device." },
+  { title: "Ask or practise", body: "Pick a mode and go — answers are composed only from your course materials." },
+  { title: "Check the source", body: "Every claim carries a pinpoint chip; tap it to read the exact passage behind the answer." },
 ];

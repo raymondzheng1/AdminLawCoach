@@ -101,7 +101,7 @@ export function ExamView({ meta }: { meta: MetaResponse | null }) {
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="block text-[14px]">
               <span className="mb-1 block font-medium text-[var(--color-muted)]">Topic</span>
-              <select value={topicId} onChange={(e) => setTopicId(e.target.value)} className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
+              <select value={topicId} onChange={(e) => setTopicId(e.target.value)} className="w-full rounded-lg border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
                 {topics.map((t) => (
                   <option key={t.id} value={t.id}>
                     {t.label}
@@ -111,14 +111,14 @@ export function ExamView({ meta }: { meta: MetaResponse | null }) {
             </label>
             <label className="block text-[14px]">
               <span className="mb-1 block font-medium text-[var(--color-muted)]">Type</span>
-              <select value={kind} onChange={(e) => setKind(e.target.value as Kind)} className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
+              <select value={kind} onChange={(e) => setKind(e.target.value as Kind)} className="w-full rounded-lg border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
                 <option value="hypothetical">Hypothetical</option>
                 <option value="essay">Essay</option>
               </select>
             </label>
             <label className="block text-[14px]">
               <span className="mb-1 block font-medium text-[var(--color-muted)]">Time</span>
-              <select value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
+              <select value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} className="w-full rounded-lg border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
                 {MINUTE_OPTIONS.map((m) => (
                   <option key={m} value={m}>
                     {m} minutes (~{wordBudget(m)} words)
@@ -141,7 +141,7 @@ export function ExamView({ meta }: { meta: MetaResponse | null }) {
         <>
           {phase === "running" ? (
             <div
-              className={`sticky top-2 z-10 flex items-center justify-between rounded-lg border px-4 py-2 ${clock.expired ? "border-[#e7c3c3] bg-[#fbeaea]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`}
+              className={`sticky top-2 z-10 flex items-center justify-between rounded-lg border px-4 py-2 ${clock.expired ? "border-[#e7c3c3] bg-[#fbeaea]" : "border-[var(--color-line-strong)] bg-[var(--color-surface)]"}`}
             >
               <span className="font-display text-lg font-semibold tabular-nums">
                 {clock.expired ? "Time up" : formatRemaining(clock.remainingMs)}
@@ -153,7 +153,7 @@ export function ExamView({ meta }: { meta: MetaResponse | null }) {
           ) : null}
 
           <Card>
-            <div className="text-[var(--text-caption)] font-semibold uppercase tracking-wide text-[var(--color-accent)]">
+            <div className="text-[var(--text-caption)] font-semibold uppercase tracking-wide text-[var(--color-teal)]">
               {question.type} · {gen.result?.topicLabel}
             </div>
             <h2 className="mt-1 font-display text-lg font-semibold">{question.title}</h2>

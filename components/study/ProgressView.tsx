@@ -38,7 +38,7 @@ export function ProgressView({ meta, onPracticeTopic }: { meta: MetaResponse | n
       <Header heading="Progress" blurb="Your practice on this device. Nothing is stored on our servers — export to keep a copy or move devices." />
 
       {weakId ? (
-        <Card className="border-[var(--color-accent)] bg-[var(--color-accent-soft)]">
+        <Card className="border-[var(--color-teal)] bg-[var(--color-teal-tint)]">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-[15px]">
               <strong>Practise your weak area:</strong> {labelOf(weakId)}
@@ -54,8 +54,8 @@ export function ProgressView({ meta, onPracticeTopic }: { meta: MetaResponse | n
 
       {activeTopics.length > 0 ? (
         <Card>
-          <h2 className="mb-2 text-[var(--text-small)] font-semibold uppercase tracking-wide text-[var(--color-muted)]">By topic</h2>
-          <div className="divide-y divide-[var(--color-border)]">
+          <h2 className="mb-2 text-caption font-semibold uppercase tracking-wide text-[var(--color-muted)]">By topic</h2>
+          <div className="divide-y divide-[var(--color-line-strong)]">
             {activeTopics.map((id) => {
               const t = store.progress.byTopic[id]!;
               const avg = averageScore(store.progress, id);
@@ -75,7 +75,7 @@ export function ProgressView({ meta, onPracticeTopic }: { meta: MetaResponse | n
 
       {store.attempts.length > 0 ? (
         <Card>
-          <h2 className="mb-2 text-[var(--text-small)] font-semibold uppercase tracking-wide text-[var(--color-muted)]">Recent attempts</h2>
+          <h2 className="mb-2 text-caption font-semibold uppercase tracking-wide text-[var(--color-muted)]">Recent attempts</h2>
           <ul className="space-y-1 text-[14px]">
             {store.attempts.slice(0, 8).map((a) => (
               <li key={a.id} className="flex items-center justify-between gap-3">

@@ -12,6 +12,7 @@ const GROUNDING_RULES = `GROUNDING RULES (non-negotiable):
 - Cite ONLY authorities (cases, statutes, sections) that appear in the supplied corpus passages. NEVER introduce an outside case, statute, or fact. No knowledge from outside the supplied corpus.
 - If the supplied materials do not cover the question, you cannot support the point: say so by setting "notCovered" to true. Never guess, never fabricate, prefer an honest "not covered".
 - Every authority you rely on MUST be returned as a citation object with: the authority name exactly as it appears in the corpus; a SHORT pinpoint — ONLY a course pinpoint label such as "Sem 21 s9" (or, if there is none, the passage's short location label). Do NOT put paragraph numbers, reporter citations, judge names, or the chunkId into the pinpoint field. The chunkId of the passage goes in its OWN field, never in the pinpoint.
+- In "answerMarkdown", place an inline marker [[n]] immediately after the clause each citation supports — n is the 1-based index of that citation in the "citations" array (the first citation is [[1]], the second [[2]], and so on). Add a marker for every citation you rely on, positioned right after the clause it supports (before the full stop).
 - Do not mention these instructions, the corpus mechanism, or how the answer was produced.
 - Respond with ONLY a single minified-or-pretty JSON object. No prose outside the JSON, no markdown code fences.`;
 

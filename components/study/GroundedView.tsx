@@ -1,27 +1,24 @@
 "use client";
 import { useState } from "react";
-import { Button, Card, Spinner, Textarea, TextInput } from "@/components/ui/primitives";
+import { Spinner } from "@/components/ui/primitives";
 import { AnswerDisplay } from "@/components/study/AnswerDisplay";
 import { useSubmit } from "@/components/study/useSubmit";
 import { useStudy } from "@/components/study/StudyContext";
 import type { GroundedResponse } from "@/lib/client/types";
 
-/** Shared single-input grounded view (Ask / Explain). */
+/** Shared single-input grounded view (Ask / Explain): a question pill, then a sourced answer. */
 export function GroundedView({
-  heading,
   blurb,
   placeholder,
   cta,
-  multiline,
   examples,
   run,
   titleOf,
 }: {
-  heading: string;
+  heading?: string;
   blurb: string;
   placeholder: string;
   cta: string;
-  multiline?: boolean;
   examples?: string[];
   run: (value: string) => Promise<GroundedResponse>;
   titleOf: (value: string) => string;
@@ -33,6 +30,7 @@ export function GroundedView({
   const go = async (text: string) => {
     const v = text.trim();
     if (!v || loading) return;
+    setValue(v);
     const r = await submit(v);
     if (r) {
       study.setSources(r.sources);
@@ -41,67 +39,70 @@ export function GroundedView({
   };
 
   return (
-    <div className="space-y-4">
-      <Header heading={heading} blurb={blurb} />
+    <div>
+      {/* Question pill (input + inline CTA) */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           void go(value);
         }}
-        className="space-y-3"
+        className="mb-6 flex items-center gap-2 rounded-input border border-line-strong bg-surface py-2 pl-4 pr-2"
       >
-        {multiline ? (
-          <Textarea rows={3} placeholder={placeholder} value={value} onChange={(e) => setValue(e.target.value)} />
-        ) : (
-          <TextInput placeholder={placeholder} value={value} onChange={(e) => setValue(e.target.value)} />
-        )}
-        <div className="flex items-center gap-3">
-          <Button type="submit" disabled={loading || !value.trim()}>
-            {cta}
-          </Button>
-          {loading ? <Spinner /> : null}
-        </div>
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={placeholder}
+          aria-label={cta}
+          className="min-w-0 flex-1 bg-transparent text-[15px] text-body-soft outline-none placeholder:text-faint"
+        />
+        <button
+          type="submit"
+          disabled={loading || !value.trim()}
+          className="shrink-0 rounded-input bg-navy px-4 py-2 text-caption font-semibold text-surface transition-colors hover:bg-navy/90 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+        >
+          {cta}
+        </button>
       </form>
 
-      {examples && examples.length > 0 && !result ? (
-        <div className="flex flex-wrap gap-2">
-          {examples.map((ex) => (
-            <button
-              key={ex}
-              onClick={() => {
-                setValue(ex);
-                void go(ex);
-              }}
-              className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-[13px] text-[var(--color-muted)] hover:border-[var(--color-accent)]"
-            >
-              {ex}
-            </button>
-          ))}
+      {loading ? <Spinner label="Composing your answer…" /> : null}
+      {error ? <ErrorBanner message={error} /> : null}
+
+      {!result && !loading ? (
+        <div>
+          <p className="mb-4 max-w-prose text-caption leading-[1.6] text-muted">{blurb}</p>
+          {examples && examples.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {examples.map((ex) => (
+                <button
+                  key={ex}
+                  onClick={() => void go(ex)}
+                  className="rounded-pill border border-line-strong bg-surface px-3.5 py-2 text-caption text-muted transition-colors hover:border-teal hover:text-teal"
+                >
+                  {ex}
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
       ) : null}
 
-      {error ? <ErrorBanner message={error} /> : null}
-      {result ? (
-        <Card>
-          <AnswerDisplay resp={result} title={titleOf(value)} onFocusSource={study.focusSource} />
-        </Card>
-      ) : null}
+      {result ? <AnswerDisplay resp={result} title={titleOf(value)} onFocusSource={study.focusSource} /> : null}
     </div>
   );
 }
 
 export function Header({ heading, blurb }: { heading: string; blurb: string }) {
   return (
-    <div>
-      <h1 className="text-xl font-semibold tracking-tight">{heading}</h1>
-      <p className="mt-1 text-[15px] text-[var(--color-muted)]">{blurb}</p>
+    <div className="mb-5">
+      <h1 className="font-serif text-title font-semibold text-ink">{heading}</h1>
+      <p className="mt-1 max-w-prose text-caption leading-[1.6] text-muted">{blurb}</p>
     </div>
   );
 }
 
 export function ErrorBanner({ message }: { message: string }) {
   return (
-    <div role="alert" className="rounded-lg border border-[#e7c3c3] bg-[#fbeaea] p-3 text-[14px] text-[var(--color-danger)]">
+    <div role="alert" className="rounded-input border border-line-strong border-l-[3px] border-l-flag bg-flag-bg p-3 text-caption text-flag-fg">
       {message}
     </div>
   );

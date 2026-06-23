@@ -1,0 +1,82 @@
+/* =====================================================================
+   AdminLaw Coach — Direction A "Bound"
+   Tailwind v4 design tokens (CSS variables via @theme)
+   Drop into app/globals.css. All values are the source of truth used in
+   the HTML reference. WCAG AA verified pairings noted in README.
+   ===================================================================== */
+@import "tailwindcss";
+
+@theme {
+  /* ---- Color: surfaces ---- */
+  --color-paper:        #fbfaf7; /* app background (warm paper) */
+  --color-paper-sunk:   #f6f4ee; /* recessed band on landing */
+  --color-panel:        #faf8f3; /* source-panel background */
+  --color-surface:      #ffffff; /* cards, inputs, header */
+
+  /* ---- Color: ink / text ---- */
+  --color-ink:          #16213e; /* headings / deepest ink */
+  --color-body:         #23221d; /* answer body copy */
+  --color-body-soft:    #33312b; /* secondary body */
+  --color-muted:        #5c584d; /* supporting text */
+  --color-faint:        #8a8577; /* captions, meta */
+  --color-faint-2:      #9a9486; /* finest print (AA on paper) */
+
+  /* ---- Color: brand ---- */
+  --color-navy:         #1f3a5f; /* primary action / RULES badge */
+  --color-navy-ink:     #16213e; /* navy text on light */
+  --color-teal:         #0f766e; /* accent — the trust / source motif */
+  --color-teal-tint:    #e9f1ef; /* chip background (default) */
+  --color-teal-border:  #cfe3df; /* chip border (default) */
+  --color-teal-soft:    #cfd8d2; /* secondary CTA underline */
+
+  /* ---- Color: lines ---- */
+  --color-line:         #e7e3d9; /* soft card border */
+  --color-line-strong:  #e0dccf; /* input border */
+  --color-line-faint:   #ece6da; /* internal dividers */
+
+  /* ---- Color: source role badges ---- */
+  --color-role-rules:        #1f3a5f; /* RULES — solid navy, white text */
+  --color-role-notes:        #0f766e; /* NOTES — solid teal, white text */
+  --color-role-model-fg:     #7a5b18; /* MODEL — outline, gold text */
+  --color-role-model-border: #d8b56a;
+
+  /* ---- Color: feedback semantics ---- */
+  --color-good:       #1f6b3a; /* "spotted" */
+  --color-warn:       #a05a1a; /* "missed" */
+  --color-flag:       #c2a86a; /* authority-check left border */
+  --color-flag-fg:    #5a4818; /* authority-check / not-covered heading */
+  --color-flag-bg:    #faf7ef; /* not-covered / flag background */
+  --color-flag-icon:  #b08a3a;
+
+  /* ---- Typography ---- */
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-sans:  ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:  "Spline Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 4-step scale (page title / section / body / caption) + hero
+     name ............ size / line-height ... usage                      */
+  --text-hero:     50px;  --text-hero--line-height:     1.08; /* landing H1 (serif 600) */
+  --text-title:    28px;  --text-title--line-height:    1.15; /* app page title (serif 600) */
+  --text-section:  17px;  --text-section--line-height:  1.4;  /* card/section heads (serif 600) */
+  --text-body:     16px;  --text-body--line-height:     1.75; /* answer body (sans) */
+  --text-caption:  13px;  --text-caption--line-height:  1.55; /* supporting (sans) */
+  --text-meta:     12px;  --text-meta--line-height:     1.5;  /* finest print, >=12 floor */
+  --text-chip:     12px;  --text-chip--line-height:     1;    /* pinpoint chip (mono 600) */
+
+  /* ---- Radius ---- */
+  --radius-chip:   4px;
+  --radius-input:  6px;
+  --radius-card:   5px;
+  --radius-cta:    3px;  /* buttons read crisp/letterpress, not pill-soft */
+  --radius-pill:   100px;
+
+  /* ---- Shadow ---- */
+  --shadow-card:  0 1px 3px rgba(0,0,0,.08);
+  --shadow-pop:   0 12px 28px rgba(0,0,0,.16); /* selected source card lift */
+
+  /* ---- Layout ---- */
+  --source-panel-w: 372px; /* desktop right column */
+}
+
+/* Selected pinpoint source uses a 2px brand ring + lift.
+   Implement as a utility or inline:  box-shadow: 0 0 0 2px var(--color-teal), var(--shadow-pop); */

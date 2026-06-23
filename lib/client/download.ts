@@ -17,7 +17,8 @@ export function groundedToMarkdown(title: string, resp: GroundedResponse): strin
   if (resp.notCovered) {
     lines.push("_Not covered by the provided materials._");
   } else {
-    lines.push(resp.answerMarkdown, "", "## Authorities (pinpointed to your materials)");
+    // Strip the inline [[n]] chip markers; the authorities are listed below.
+    lines.push(resp.answerMarkdown.replace(/\s*\[\[\d+\]\]/g, ""), "", "## Authorities (pinpointed to your materials)");
     for (const c of resp.citations) lines.push(`- ${c.authority} — ${c.pinpoint} (${c.chunkId})`);
   }
   lines.push("", "---", "_A study aid grounded only in the provided course materials. Not legal advice._");

@@ -71,13 +71,13 @@ export function InstallPrompt() {
       : "Use Install in your browser menu to add it to your device.";
 
   return (
-    <div className="border-b border-[var(--color-border)] bg-[var(--color-accent-soft)]">
+    <div className="border-b border-[var(--color-line-strong)] bg-[var(--color-teal-tint)]">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-[14px]">
         <span className="font-medium">Install AdminLaw Coach</span>
         <span className="text-[var(--color-muted)]">{hint}</span>
         <span className="ml-auto flex items-center gap-2">
           {deferred ? (
-            <button onClick={install} className="rounded-md bg-[var(--color-primary)] px-3 py-1.5 font-medium text-[var(--color-primary-fg)]">
+            <button onClick={install} className="rounded-md bg-[var(--color-navy)] px-3 py-1.5 font-medium text-[#ffffff]">
               Install
             </button>
           ) : null}

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button, Card, Spinner, Textarea } from "@/components/ui/primitives";
+import { Spinner, Textarea } from "@/components/ui/primitives";
 import { Header, ErrorBanner } from "@/components/study/GroundedView";
 import { AnswerDisplay } from "@/components/study/AnswerDisplay";
 import { useStudy } from "@/components/study/StudyContext";
@@ -25,29 +25,35 @@ export function ModelAnswerView() {
   };
 
   return (
-    <div className="space-y-4">
+    <div>
       <Header
         heading="Model answers"
-        blurb="Paste a hypothetical or essay prompt — get a worked model answer in IRAC (or contention → both sides → preferred), every authority pinpointed to your materials."
+        blurb="Paste a hypothetical or essay prompt — a worked answer in IRAC (or contention → both sides → preferred), every authority pinpointed to your materials."
       />
-      <Card>
-        <Textarea rows={6} placeholder="Paste the hypothetical facts or essay contention…" value={text} onChange={(e) => setText(e.target.value)} />
-        <div className="mt-3 flex flex-wrap items-center gap-3">
-          <select value={kind} onChange={(e) => setKind(e.target.value as Kind)} className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[15px]">
-            <option value="hypothetical">Hypothetical (IRAC)</option>
-            <option value="essay">Essay</option>
-          </select>
-          <Button onClick={go} disabled={loading || !text.trim()}>
-            {loading ? "Writing…" : "Write model answer"}
-          </Button>
-          {loading ? <Spinner /> : null}
-        </div>
-      </Card>
-      {error ? <ErrorBanner message={error} /> : null}
+      <Textarea rows={6} placeholder="Paste the hypothetical facts or essay contention…" value={text} onChange={(e) => setText(e.target.value)} />
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <select
+          value={kind}
+          onChange={(e) => setKind(e.target.value as Kind)}
+          className="rounded-input border border-line-strong bg-surface px-3 py-2 text-caption text-muted outline-none focus:border-teal"
+        >
+          <option value="hypothetical">Hypothetical (IRAC)</option>
+          <option value="essay">Essay</option>
+        </select>
+        <button
+          onClick={go}
+          disabled={loading || !text.trim()}
+          className="rounded-cta bg-navy px-4 py-2 text-caption font-semibold text-surface transition-colors hover:bg-navy/90 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal"
+        >
+          Write model answer
+        </button>
+        {loading ? <Spinner label="Writing…" /> : null}
+      </div>
+      {error ? <div className="mt-4"><ErrorBanner message={error} /></div> : null}
       {result ? (
-        <Card>
+        <div className="mt-6">
           <AnswerDisplay resp={result} title="model-answer" onFocusSource={study.focusSource} />
-        </Card>
+        </div>
       ) : null}
     </div>
   );

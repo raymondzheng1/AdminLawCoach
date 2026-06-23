@@ -1,28 +1,82 @@
+/* =====================================================================
+   AdminLaw Coach — Direction A "Bound"
+   Tailwind v4 design tokens (CSS variables via @theme). Source of truth:
+   design_handoff_adminlaw_coach/tokens/theme.css. Fonts are wired to the
+   next/font CSS variables set on <html> (self-hosted — CSP stays 'self').
+   ===================================================================== */
 @import "tailwindcss";
 
-/* Design tokens — single source for colour/type/spacing (§3.2, §14.4). */
 @theme {
+  /* ---- Color: surfaces ---- */
   --color-paper: #fbfaf7;
+  --color-paper-sunk: #f6f4ee;
+  --color-panel: #faf8f3;
   --color-surface: #ffffff;
+
+  /* ---- Color: ink / text ---- */
   --color-ink: #16213e;
-  --color-muted: #5b6478;
-  --color-border: #e7e3d9;
-  --color-primary: #1f3a5f;
-  --color-primary-fg: #ffffff;
-  --color-accent: #0f766e;
-  --color-accent-soft: #e6f2f0;
-  --color-danger: #b91c1c;
-  --color-warn: #9a5b06;
+  --color-body: #23221d;
+  --color-body-soft: #33312b;
+  --color-muted: #5c584d;
+  --color-faint: #8a8577;
+  --color-faint-2: #9a9486;
+  --color-quote: #4a473f;
 
-  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  /* ---- Color: brand ---- */
+  --color-navy: #1f3a5f;
+  --color-navy-ink: #16213e;
+  --color-teal: #0f766e;
+  --color-teal-tint: #e9f1ef;
+  --color-teal-border: #cfe3df;
+  --color-teal-soft: #cfd8d2;
 
-  --text-caption: 0.8125rem;
-  --text-small: 0.9375rem;
+  /* ---- Color: lines ---- */
+  --color-line: #e7e3d9;
+  --color-line-strong: #e0dccf;
+  --color-line-faint: #ece6da;
+  --color-line-quote: #eee7d9;
 
-  --radius-card: 0.75rem;
+  /* ---- Color: source role badges ---- */
+  --color-role-rules: #1f3a5f;
+  --color-role-notes: #0f766e;
+  --color-role-model-fg: #7a5b18;
+  --color-role-model-border: #d8b56a;
+
+  /* ---- Color: feedback semantics ---- */
+  --color-good: #1f6b3a;
+  --color-warn: #a05a1a;
+  --color-flag: #c2a86a;
+  --color-flag-fg: #5a4818;
+  --color-flag-bg: #faf7ef;
+  --color-flag-icon: #b08a3a;
+
+  /* ---- Typography (fonts resolve to next/font vars set on <html>) ---- */
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-spline-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 4-step scale + hero (px values match the handoff) */
+  --text-hero: 50px;     --text-hero--line-height: 1.08;
+  --text-title: 28px;    --text-title--line-height: 1.15;
+  --text-section: 17px;  --text-section--line-height: 1.4;
+  --text-body: 16px;     --text-body--line-height: 1.75;
+  --text-caption: 13px;  --text-caption--line-height: 1.55;
+  --text-meta: 12px;     --text-meta--line-height: 1.5;
+  --text-chip: 12px;     --text-chip--line-height: 1;
+
+  /* ---- Radius ---- */
+  --radius-chip: 4px;
+  --radius-input: 6px;
+  --radius-card: 5px;
+  --radius-cta: 3px;
+  --radius-pill: 100px;
+
+  /* ---- Shadow ---- */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-pop: 0 12px 28px rgba(0, 0, 0, 0.16);
+
+  /* ---- Layout ---- */
+  --source-panel-w: 372px;
 }
 
 html {
@@ -31,46 +85,37 @@ html {
 
 body {
   background-color: var(--color-paper);
-  color: var(--color-ink);
+  color: var(--color-body);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-h1,
-h2,
-h3,
-.font-display {
-  font-family: var(--font-display);
+::selection {
+  background: rgba(15, 118, 110, 0.18);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-serif);
+  color: var(--color-ink);
+}
+
+/* Hide scrollbar on the mobile mode row (it scrolls horizontally, never wraps). */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* The selected source card lift — 2px brand ring + pop (§ signature). */
+.src-selected {
+  border-color: var(--color-teal) !important;
+  box-shadow: 0 0 0 2px var(--color-teal), var(--shadow-pop);
+  transform: translateY(-1px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
-}
-
-/* Reusable primitives (§3.2). */
-@layer components {
-  .card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-  }
-  .pinpoint-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    border: 1px solid var(--color-accent);
-    color: var(--color-accent);
-    background-color: var(--color-accent-soft);
-    border-radius: 999px;
-    padding: 0.0625rem 0.5rem;
-    font-size: var(--text-caption);
-    font-weight: 600;
-    line-height: 1.5;
-  }
+  .src-selected { transform: none; }
 }

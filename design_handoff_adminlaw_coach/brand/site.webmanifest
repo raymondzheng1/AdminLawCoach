@@ -1,0 +1,20 @@
+{
+  "name": "AdminLaw Coach",
+  "short_name": "AdminLaw",
+  "description": "A free, login-free study companion for administrative law — every answer sourced to your own course materials, or it says \"not covered.\"",
+  "id": "/",
+  "start_url": "/study",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbfaf7",
+  "theme_color": "#1f3a5f",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "/icons/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
