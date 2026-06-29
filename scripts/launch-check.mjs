@@ -60,6 +60,12 @@ const layout = read("app/layout.tsx");
 need(/@vercel\/analytics/.test(layout) && /<Analytics/.test(layout), "Analytics: <Analytics/> not mounted in the root layout (§8.5)");
 need(/GoogleAnalytics/.test(layout), "Analytics: GA4 loader not mounted in the root layout (§8.2)");
 
+// --- Contact form (§16.3) -----------------------------------------------------------------
+need(exists("app/contact/page.tsx"), "Contact: app/contact/page.tsx missing (§16.3)");
+need(exists("app/api/contact/route.ts"), "Contact: app/api/contact/route.ts missing (§16.3)");
+need(exists("lib/email.ts"), "Contact: lib/email.ts shared helper missing (§16.2)");
+need(/rateLimit/.test(read("app/api/contact/route.ts")), "Contact: route must rate-limit (§16.3, fail-closed)");
+
 // --- Platform guards (§15) ----------------------------------------------------------------
 // The Marketplace injects KV_REST_API_*, not the legacy UPSTASH_*; readUpstashEnv must accept
 // both, pinned by its own unit test (§4.7).

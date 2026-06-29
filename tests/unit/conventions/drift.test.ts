@@ -50,12 +50,27 @@ describe("drift: no `server-only` import in libs the tests touch (§15)", () => 
     "lib/verification/index.ts",
     "lib/retrieval/index.ts",
     "lib/corpus/index.ts",
+    "lib/email.ts",
   ];
   for (const lib of TEST_TOUCHED_LIBS) {
     it(`${lib} does not import "server-only"`, () => {
       expect(/import\s+["']server-only["']/.test(read(lib))).toBe(false);
     });
   }
+});
+
+// The contact form is an always-on deliverable (§16.3 — "every project ships /contact").
+describe("drift: contact deliverable (§16.3)", () => {
+  for (const f of ["app/contact/page.tsx", "app/api/contact/route.ts", "lib/email.ts"]) {
+    it(`${f} exists`, () => {
+      expect(existsSync(resolve(ROOT, f))).toBe(true);
+    });
+  }
+  it("the contact route rate-limits (fail-closed) and sends via the shared helper", () => {
+    const route = read("app/api/contact/route.ts");
+    expect(route.includes("rateLimit")).toBe(true);
+    expect(route.includes("sendEmail")).toBe(true);
+  });
 });
 
 // The PWA install affordance is an always-on Tier-B deliverable (§2.0 includes, §19).

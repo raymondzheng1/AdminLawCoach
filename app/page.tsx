@@ -92,9 +92,12 @@ export default function HomePage() {
       </section>
 
       <footer className="border-t border-line-faint px-6 py-5 md:px-10">
-        <p className="mx-auto max-w-6xl text-meta leading-[1.5] text-faint-2">
-          A study aid, not legal advice. For practice and revision, not live assessment.
-        </p>
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 text-meta leading-[1.5] text-faint-2">
+          <p>A study aid, not legal advice. For practice and revision, not live assessment.</p>
+          <Link href="/contact" className="font-medium text-navy hover:underline">
+            Contact
+          </Link>
+        </div>
       </footer>
     </div>
   );
