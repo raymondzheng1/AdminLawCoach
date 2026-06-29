@@ -30,15 +30,15 @@ function contact(body: unknown): NextRequest {
 const valid = { name: "Alex Student", email: "alex@example.com", subject: "Help", message: "Can you explain unreasonableness?" };
 
 describe("/api/contact", () => {
-  it("sends the enquiry to the operator (reply-to the sender) + an acknowledgement", async () => {
+  it("sends the enquiry to the operator (reply-to the sender), no acknowledgement", async () => {
     const res = await POST(contact(valid));
     expect(res.status).toBe(200);
     expect((await res.json()).ok).toBe(true);
-    expect(sent.length).toBe(2); // operator notification + sender ack
+    expect(sent.length).toBe(1); // operator notification only
     const op = sent[0]!;
+    expect(op.to).toBe("raymond.zheng@gmail.com"); // ADMIN_NOTIFY_EMAIL default
     expect(op.replyTo).toBe("alex@example.com");
     expect(op.subject).toContain("Alex Student");
-    expect(sent[1]!.to).toBe("alex@example.com"); // acknowledgement to the sender
   });
 
   it("escapes HTML in the operator email body (no injection)", async () => {

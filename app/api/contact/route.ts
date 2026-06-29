@@ -10,8 +10,8 @@ export const dynamic = "force-dynamic";
 
 /**
  * Contact form (Harness §16.3). Operator receives the enquiry at ADMIN_NOTIFY_EMAIL
- * with reply-to set to the sender; the sender gets an acknowledgement. Rate-limited
- * to 3/IP/hour (fail-closed §6.4). No content is logged (§6.2).
+ * with reply-to set to the sender (no sender acknowledgement). Rate-limited to
+ * 3/IP/hour (fail-closed §6.4). No content is logged (§6.2).
  */
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -45,13 +45,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "send_failed", message: "Something went wrong sending your message. Please try again." }, { status: 502 });
   }
 
-  // Acknowledge to the sender — best-effort; don't fail the request if the ack bounces.
-  await sendEmail({
-    to: email,
-    subject: "We’ve received your message",
-    html: `<p>Hi ${escapeHtml(name)},</p><p>Thanks for reaching out — we’ll be in touch shortly.</p>`,
-    text: `Hi ${name},\n\nThanks for reaching out — we’ll be in touch shortly.`,
-  }).catch(() => {});
-
+  // No sender acknowledgement — the operator simply receives the enquiry (reply-to the sender).
   return NextResponse.json({ ok: true });
 }

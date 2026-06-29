@@ -34,9 +34,9 @@ export function ContactForm() {
   if (state.kind === "sent") {
     return (
       <div className="rounded-card border border-line bg-surface p-6 text-center shadow-card">
-        <div className="font-serif text-section font-semibold text-ink">Thanks — your message is on its way.</div>
+        <div className="font-serif text-section font-semibold text-ink">Thanks — your message has been sent.</div>
         <p className="mx-auto mt-1 max-w-sm text-caption leading-[1.6] text-muted">
-          We’ve sent a confirmation to your email and will be in touch shortly.
+          We’ve received it and will be in touch shortly.
         </p>
       </div>
     );

@@ -3,7 +3,9 @@
 // vitest, §15); server-only by convention — imported only by route handlers.
 const RESEND_API_URL = "https://api.resend.com/emails";
 
-export const FROM_EMAIL = process.env.FROM_EMAIL ?? "noreply@example.com";
+// Defaults to Resend's shared sandbox sender — works with no verified domain and
+// delivers to the Resend account owner (ADMIN_NOTIFY_EMAIL). Override for production (§16.1).
+export const FROM_EMAIL = process.env.FROM_EMAIL ?? "onboarding@resend.dev";
 export const ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL ?? "raymond.zheng@gmail.com";
 
 export interface EmailArgs {
