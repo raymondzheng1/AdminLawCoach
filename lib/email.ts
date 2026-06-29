@@ -1,6 +1,8 @@
 // Shared email helper (Harness §16.2, Variant A — REST via fetch, zero extra deps).
 // NB: deliberately NOT importing "server-only" (it makes the module un-importable in
 // vitest, §15); server-only by convention — imported only by route handlers.
+import { SITE } from "@/lib/site";
+
 const RESEND_API_URL = "https://api.resend.com/emails";
 
 // Defaults to Resend's shared sandbox sender — works with no verified domain and
@@ -29,11 +31,14 @@ const realSender: EmailSender = async ({ to, subject, html, text, replyTo }) => 
     console.warn("[email] RESEND_API_KEY not set — email not sent:", subject);
     return { ok: false, error: "resend_unconfigured" };
   }
+  // Show the app name as the sender so the recipient knows it's from this app
+  // (unless FROM_EMAIL already carries a display name).
+  const from = FROM_EMAIL.includes("<") ? FROM_EMAIL : `${SITE.name} <${FROM_EMAIL}>`;
   try {
     const res = await fetch(RESEND_API_URL, {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from: FROM_EMAIL, to, subject, html, text, ...(replyTo ? { reply_to: replyTo } : {}) }),
+      body: JSON.stringify({ from, to, subject, html, text, ...(replyTo ? { reply_to: replyTo } : {}) }),
     });
     if (!res.ok) {
       // Never log the full Resend response — may carry delivery metadata treated as PII (§6.2).

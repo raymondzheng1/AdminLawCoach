@@ -4,6 +4,7 @@ import { getClientIp } from "@/lib/session";
 import { rateLimit } from "@/lib/ratelimit";
 import { parseBody } from "@/lib/api/route-helpers";
 import { sendEmail, escapeHtml, ADMIN_EMAIL } from "@/lib/email";
+import { SITE } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,11 +28,13 @@ export async function POST(req: NextRequest) {
   if (!body) return NextResponse.json({ error: "invalid_input", message: "Please check the form and try again." }, { status: 400 });
 
   const { name, email, subject, message } = body;
+  const footerHtml = `<hr style="border:none;border-top:1px solid #e7e3d9;margin:16px 0"><p style="color:#8a8577;font-size:12px">Sent via the ${SITE.name} contact form · ${SITE.url}</p>`;
+  const footerText = `\n\n— Sent via the ${SITE.name} contact form · ${SITE.url}`;
   const op = await sendEmail({
     to: ADMIN_EMAIL,
-    subject: `[Contact] ${subject ?? "Enquiry"} — ${name}`,
-    html: `<p><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
-    text: `From: ${name} <${email}>\n\n${message}`,
+    subject: `[${SITE.name}] ${subject ?? "Contact enquiry"} — ${name}`,
+    html: `<p><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>${footerHtml}`,
+    text: `From: ${name} <${email}>\n\n${message}${footerText}`,
     replyTo: email,
   });
 
